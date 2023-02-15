@@ -19,3 +19,4 @@
 .vscode
 vendor
 examples/_fixtures/*/
+.idea
