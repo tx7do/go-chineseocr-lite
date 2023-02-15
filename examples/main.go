@@ -6,5 +6,29 @@ func init() {
 }
 
 func main() {
-	_, _ = ocrlite.New()
+	var numThread = 4
+	var padding = 50
+	var maxSideLen = 1024
+	var boxScoreThresh float32 = 0.6
+	var boxThresh float32 = 0.3
+	var unClipRatio float32 = 2.0
+	var doAngle = true
+	var mostAngle = true
+
+	pred := ocrlite.New()
+
+	pred.SetNumThread(numThread)
+
+	pred.InitModels(
+		"../models/dbnet.onnx",
+		"../models/angle_net.onnx",
+		"../models/crnn_lite_lstm.onnx",
+		"../models/keys.txt",
+	)
+
+	pred.Detect("_fixtures", "1.jpg",
+		padding, maxSideLen,
+		boxScoreThresh, boxThresh, unClipRatio,
+		doAngle, mostAngle,
+	)
 }
