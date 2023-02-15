@@ -1,0 +1,29 @@
+app:
+  name: carml
+  debug: true
+  verbose: true
+  tempdir: ~/data/carml
+
+registry:
+  provider: consul
+  endpoints:
+    - localhost:8500
+  timeout: 20s
+  serializer: jsonpb
+
+database:
+  provider: mongodb
+  endpoints:
+    - localhost
+
+tracer:
+  enabled: true
+  provider: jaeger
+  endpoints:
+    - localhost:9411
+  level: FULL_TRACE
+
+logger:
+  level: debug
+  hooks:
+    - syslog

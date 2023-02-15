@@ -1,0 +1,4 @@
+github.com/benesch/cgosymbolizer v0.0.0-20190515212042-bec6fe6e597b h1:5JgaFtHFRnOPReItxvhMDXbvuBkjSWE+9glJyF466yw=
+github.com/benesch/cgosymbolizer v0.0.0-20190515212042-bec6fe6e597b/go.mod h1:eMD2XUcPsHYbakFEocKrWZp47G0MRJYoC60qFblGjpA=
+github.com/ianlancetaylor/cgosymbolizer v0.0.0-20221217025313-27d3c9f66b6a h1:2pDHS5ciC7EKulVtDBD2J+9X9Eypl1K60q4EJyHvvxY=
+github.com/ianlancetaylor/cgosymbolizer v0.0.0-20221217025313-27d3c9f66b6a/go.mod h1:DvXTE/K/RtHehxU8/GtDs4vFtfw64jJ3PaCnFri8CRg=
