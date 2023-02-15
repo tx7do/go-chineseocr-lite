@@ -12,8 +12,8 @@ func main() {
 	var numThread = 4
 	var padding = 50
 	var maxSideLen = 1024
-	var boxScoreThresh float32 = 0.6
-	var boxThresh float32 = 0.3
+	var boxScoreThresh float32 = 0.618
+	var boxThresh float32 = 0.300
 	var unClipRatio float32 = 2.0
 	var doAngle = true
 	var mostAngle = true
@@ -29,7 +29,7 @@ func main() {
 		"../models/keys.txt",
 	)
 
-	result := pred.Detect("_fixtures/", "2.jpg",
+	result := pred.Detect("_fixtures/", "1.jpg",
 		padding, maxSideLen,
 		boxScoreThresh, boxThresh, unClipRatio,
 		doAngle, mostAngle,
