@@ -18,5 +18,9 @@
 *.json
 .vscode
 vendor
-examples/_fixtures/*/
+
 .idea
+
+examples/_fixtures/*-result.jpg
+examples/_fixtures/*-result.txt
+examples/_fixtures*.txt

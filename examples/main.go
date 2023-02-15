@@ -1,6 +1,9 @@
 package main
 
-import ocrlite "github.com/tx7do/go-chineseocr-lite"
+import (
+	ocrlite "github.com/tx7do/go-chineseocr-lite"
+	"log"
+)
 
 func init() {
 }
@@ -15,7 +18,7 @@ func main() {
 	var doAngle = true
 	var mostAngle = true
 
-	pred := ocrlite.New()
+	pred := ocrlite.New(true, false, true)
 
 	pred.SetNumThread(numThread)
 
@@ -26,9 +29,10 @@ func main() {
 		"../models/keys.txt",
 	)
 
-	pred.Detect("_fixtures", "1.jpg",
+	result := pred.Detect("_fixtures/", "2.jpg",
 		padding, maxSideLen,
 		boxScoreThresh, boxThresh, unClipRatio,
 		doAngle, mostAngle,
 	)
+	log.Println(result)
 }

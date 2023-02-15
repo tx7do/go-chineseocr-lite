@@ -11,9 +11,9 @@ type Predictor struct {
 	ctx C.OCR_PredictorContext
 }
 
-func New() *Predictor {
+func New(isOutputConsole, isOutputPartImg, isOutputResultImg bool) *Predictor {
 	pred := &Predictor{
-		ctx: C.OCR_NewPredictor(),
+		ctx: C.OCR_NewPredictor(C.bool(isOutputConsole), C.bool(isOutputPartImg), C.bool(isOutputResultImg)),
 	}
 	return pred
 }
@@ -43,17 +43,21 @@ func (p *Predictor) InitModels(detPath, clsPath, recPath, keysPath string) bool 
 	return bool(C.OCR_PredictorInitModels(p.ctx, cDetPath, cClsPath, cRecPath, cKeysPath))
 }
 
-func (p *Predictor) Detect(imgDir, imgFile string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) {
+func (p *Predictor) Detect(imgDir, imgFile string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
 	cImgDir := C.CString(imgDir)
 	defer C.free(unsafe.Pointer(cImgDir))
 
 	cImgFile := C.CString(imgFile)
 	defer C.free(unsafe.Pointer(cImgFile))
 
-	C.OCR_PredictorDetectFile(p.ctx,
+	result := C.OCR_PredictorDetectFile(p.ctx,
 		cImgDir, cImgFile,
 		C.int(padding), C.int(maxSideLen),
 		C.float(boxScoreThresh), C.float(boxThresh), C.float(unClipRatio),
 		C.bool(doAngle), C.bool(mostAngle),
 	)
+
+	goResult := C.GoString(result)
+
+	return string(goResult)
 }

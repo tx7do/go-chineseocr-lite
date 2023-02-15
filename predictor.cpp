@@ -10,12 +10,19 @@
 struct Predictor
 {
     std::shared_ptr<OcrLite> _ocrlite;
+    OcrResult _latestResult;
     Predictor() : _ocrlite(std::make_shared<OcrLite>()) {}
 };
 
-OCR_PredictorContext OCR_NewPredictor()
+OCR_PredictorContext OCR_NewPredictor(bool isOutputConsole, bool isOutputPartImg, bool isOutputResultImg)
 {
     const auto ctx = new Predictor();
+
+    ctx->_ocrlite->initLogger(
+            isOutputConsole,//isOutputConsole
+            isOutputPartImg,//isOutputPartImg
+            isOutputResultImg);//isOutputResultImg
+
     return (OCR_PredictorContext)ctx;
 }
 
@@ -41,9 +48,26 @@ bool OCR_PredictorInitModels(OCR_PredictorContext pred, const char* detPath, con
     return predictor->_ocrlite->initModels(detPath, clsPath, recPath, keysPath);
 }
 
-void OCR_PredictorDetectFile(OCR_PredictorContext pred, const char* dir, const char* file, int padding, int maxSideLen, float boxScoreThresh, float boxThresh, float unClipRatio, bool doAngle, bool mostAngle)
+const char* OCR_PredictorDetectFile(OCR_PredictorContext pred, const char* imgDir, const char* imgName, int padding, int maxSideLen, float boxScoreThresh, float boxThresh, float unClipRatio, bool doAngle, bool mostAngle)
 {
     auto predictor = (Predictor*) pred;
-    OcrResult result = predictor->_ocrlite->detect(dir, file, padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
-    predictor->_ocrlite->Logger("%s\n", result.strRes.c_str());
+
+    predictor->_ocrlite->enableResultTxt(imgDir, imgName);
+
+    predictor->_ocrlite->Logger("=====Input Params=====\n");
+    predictor->_ocrlite->Logger(
+            "padding(%d),maxSideLen(%d),boxScoreThresh(%f),boxThresh(%f),unClipRatio(%f),doAngle(%d),mostAngle(%d)\n",
+            padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
+
+    try
+    {
+        predictor->_latestResult = predictor->_ocrlite->detect(imgDir, imgName, padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
+        // predictor->_ocrlite->Logger("Result String:\n %s\n", result.strRes.c_str());
+        return predictor->_latestResult.strRes.c_str();
+    }
+    catch (std::exception& e)
+    {
+        predictor->_ocrlite->Logger("Detect Error:\n %s\n", e.what());
+        return "";
+    }
 }
