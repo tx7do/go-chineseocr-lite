@@ -54,20 +54,20 @@ const char* OCR_PredictorDetectFile(OCR_PredictorContext pred, const char* imgDi
 
     predictor->_ocrlite->enableResultTxt(imgDir, imgName);
 
-    predictor->_ocrlite->Logger("=====Input Params=====\n");
-    predictor->_ocrlite->Logger(
+    predictor->_ocrlite->log("=====Input Params=====\n");
+    predictor->_ocrlite->log(
             "padding(%d),maxSideLen(%d),boxScoreThresh(%f),boxThresh(%f),unClipRatio(%f),doAngle(%d),mostAngle(%d)\n",
             padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
 
     try
     {
         predictor->_latestResult = predictor->_ocrlite->detect(imgDir, imgName, padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
-        // predictor->_ocrlite->Logger("Result String:\n %s\n", result.strRes.c_str());
+        // predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
         return predictor->_latestResult.strRes.c_str();
     }
     catch (std::exception& e)
     {
-        predictor->_ocrlite->Logger("Detect Error:\n %s\n", e.what());
+        predictor->_ocrlite->log("Detect Error:\n %s\n", e.what());
         return "";
     }
 }

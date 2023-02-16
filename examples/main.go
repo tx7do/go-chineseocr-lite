@@ -29,7 +29,7 @@ func main() {
 		"../models/keys.txt",
 	)
 
-	result := pred.Detect("_fixtures/", "1.jpg",
+	result := pred.Detect("_fixtures/", "p6.jpg",
 		padding, maxSideLen,
 		boxScoreThresh, boxThresh, unClipRatio,
 		doAngle, mostAngle,
