@@ -20,10 +20,23 @@ void OCR_PredictorDelete(OCR_PredictorContext pred);
 void OCR_PredictorSetNumThread(OCR_PredictorContext pred, int numOfThread);
 
 // set predictor models
-bool OCR_PredictorInitModels(OCR_PredictorContext pred, const char* detPath, const char* clsPath, const char* recPath, const char* keysPath);
+bool OCR_PredictorInitModels(OCR_PredictorContext pred,
+	const char* detPath, const char* clsPath, const char* recPath,
+	const char* keysPath);
 
-// detect image
-const char* OCR_PredictorDetectFile(OCR_PredictorContext pred, const char* dir, const char* file, int padding, int maxSideLen, float boxScoreThresh, float boxThresh, float unClipRatio, bool doAngle, bool mostAngle);
+// detect file image
+const char* OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
+	const char* dir, const char* file,
+	int padding, int maxSideLen,
+	float boxScoreThresh, float boxThresh, float unClipRatio,
+	bool doAngle, bool mostAngle);
+
+// detect memory image
+const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
+	char* imageBuffer, int bufferLength,
+	int padding, int maxSideLen,
+	float boxScoreThresh, float boxThresh, float unClipRatio,
+	bool doAngle, bool mostAngle);
 
 #ifdef __cplusplus
 }

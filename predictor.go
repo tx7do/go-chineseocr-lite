@@ -50,7 +50,7 @@ func (p *Predictor) InitModels(detPath, clsPath, recPath, keysPath string) bool 
 	return bool(C.OCR_PredictorInitModels(p.ctx, cDetPath, cClsPath, cRecPath, cKeysPath))
 }
 
-// Detect 识别图片
+// DetectFileImage 识别文件图片
 //
 //	imgPath 目标图片路径，可以相对路径也可以绝对路径。
 //	imgName 图片的文件名
@@ -61,15 +61,32 @@ func (p *Predictor) InitModels(detPath, clsPath, recPath, keysPath string) bool 
 //	unClipRatio 单个文字框大小倍率，越大时单个文字框越大。此项与图片的大小相关，越大的图片此值应该越大。
 //	doAngle 启用文字方向检测，只有图片倒置的情况下(旋转90~270度的图片)，才需要启用文字方向检测。
 //	mostAngle
-func (p *Predictor) Detect(imgDir, imgName string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
+func (p *Predictor) DetectFileImage(imgDir, imgName string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
 	cImgDir := C.CString(imgDir)
 	defer C.free(unsafe.Pointer(cImgDir))
 
 	cImgFile := C.CString(imgName)
 	defer C.free(unsafe.Pointer(cImgFile))
 
-	result := C.OCR_PredictorDetectFile(p.ctx,
+	result := C.OCR_PredictorDetectFileImage(p.ctx,
 		cImgDir, cImgFile,
+		C.int(padding), C.int(maxSideLen),
+		C.float(boxScoreThresh), C.float(boxThresh), C.float(unClipRatio),
+		C.bool(doAngle), C.bool(mostAngle),
+	)
+
+	goResult := C.GoString(result)
+
+	return string(goResult)
+}
+
+// DetectMemoryImage 识别内存图片
+func (p *Predictor) DetectMemoryImage(imgBuffer string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
+	cImgDir := C.CString(imgBuffer)
+	defer C.free(unsafe.Pointer(cImgDir))
+
+	result := C.OCR_PredictorDetectMemoryImage(p.ctx,
+		cImgDir,
 		C.int(padding), C.int(maxSideLen),
 		C.float(boxScoreThresh), C.float(boxThresh), C.float(unClipRatio),
 		C.bool(doAngle), C.bool(mostAngle),
