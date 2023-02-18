@@ -15,7 +15,7 @@ func main() {
 	var maxSideLen = 1024
 	var boxScoreThresh float32 = 0.618
 	var boxThresh float32 = 0.300
-	var unClipRatio float32 = 2.0
+	var unClipRatio float32 = 2.6
 	var doAngle = true
 	var mostAngle = true
 

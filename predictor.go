@@ -86,7 +86,7 @@ func (p *Predictor) DetectMemoryImage(imgBuffer string, padding, maxSideLen int,
 	defer C.free(unsafe.Pointer(cImgDir))
 
 	result := C.OCR_PredictorDetectMemoryImage(p.ctx,
-		cImgDir,
+		cImgDir, C.int(len(imgBuffer)),
 		C.int(padding), C.int(maxSideLen),
 		C.float(boxScoreThresh), C.float(boxThresh), C.float(unClipRatio),
 		C.bool(doAngle), C.bool(mostAngle),
