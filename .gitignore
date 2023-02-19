@@ -23,4 +23,7 @@ vendor
 
 examples/_fixtures/*-result.jpg
 examples/_fixtures/*-result.txt
-examples/_fixtures*.txt
+examples/detect_file/_fixtures*.txt
+examples/detect_file/*-result*.txt
+examples/detect_memory/_fixtures*.txt
+examples/detect_memory/*-result.txt

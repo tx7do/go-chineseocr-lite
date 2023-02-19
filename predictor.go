@@ -76,13 +76,12 @@ func (p *Predictor) DetectFileImage(imgDir, imgName string, padding, maxSideLen 
 	)
 
 	goResult := C.GoString(result)
-
 	return string(goResult)
 }
 
 // DetectMemoryImage 识别内存图片
-func (p *Predictor) DetectMemoryImage(imgBuffer string, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
-	cImageBuffer := C.CString(imgBuffer)
+func (p *Predictor) DetectMemoryImage(imgBuffer []byte, padding, maxSideLen int, boxScoreThresh, boxThresh, unClipRatio float32, doAngle, mostAngle bool) string {
+	cImageBuffer := C.CString(string(imgBuffer))
 	defer C.free(unsafe.Pointer(cImageBuffer))
 
 	result := C.OCR_PredictorDetectMemoryImage(p.ctx,
@@ -93,6 +92,5 @@ func (p *Predictor) DetectMemoryImage(imgBuffer string, padding, maxSideLen int,
 	)
 
 	goResult := C.GoString(result)
-
 	return string(goResult)
 }

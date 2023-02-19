@@ -3,6 +3,7 @@ package main
 import (
 	ocrlite "github.com/tx7do/go-chineseocr-lite"
 	"log"
+	"os"
 )
 
 func init() {
@@ -19,18 +20,26 @@ func main() {
 	var doAngle = true
 	var mostAngle = true
 
+	var modelPath = "../../models/"
+
 	pred := ocrlite.New(true, false, true)
 
 	pred.SetNumThread(numThread)
 
 	pred.InitModels(
-		"../models/dbnet.onnx",
-		"../models/angle_net.onnx",
-		"../models/crnn_lite_lstm.onnx",
-		"../models/keys.txt",
+		modelPath+"dbnet.onnx",
+		modelPath+"angle_net.onnx",
+		modelPath+"crnn_lite_lstm.onnx",
+		modelPath+"keys.txt",
 	)
 
-	result := pred.DetectFileImage("_fixtures/", "2.jpg",
+	f, err := os.ReadFile("../_fixtures/2.jpg")
+	if err != nil {
+		log.Fatalf("load file failed: %s", err.Error())
+		return
+	}
+
+	result := pred.DetectMemoryImage(f,
 		padding, maxSideLen,
 		boxScoreThresh, boxThresh, unClipRatio,
 		doAngle, mostAngle,
