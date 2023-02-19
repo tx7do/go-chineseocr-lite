@@ -100,7 +100,9 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 
 	std::vector<char> buff;
 	buff.resize(bufferLength);
-	std::memcpy( buff.data(), imageBuffer, bufferLength);
+	std::memcpy(buff.data(), imageBuffer, bufferLength);
+
+	predictor->_ocrlite->log("=====Decode Image=====\n");
 
 	cv::Mat matImg;
 	try
@@ -112,6 +114,8 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 		predictor->_ocrlite->log("decode image error:\n %s\n", e.what());
 		return "";
 	}
+
+	predictor->_ocrlite->log("=====Decode Image Done=====\n");
 
 	predictor->_ocrlite->enableResultTxt("memory", "images");
 
