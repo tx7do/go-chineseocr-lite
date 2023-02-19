@@ -5,6 +5,8 @@
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgcodecs/legacy/constants_c.h>
+#include <opencv2/imgproc/types_c.h>
 
 #include <memory>
 #include <string>
@@ -96,12 +98,14 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 {
 	auto predictor = (Predictor*)pred;
 
-	std::vector<uchar> buff(imageBuffer, bufferLength);
+	std::vector<char> buff;
+	buff.resize(bufferLength);
+	std::memcpy( buff.data(), imageBuffer, bufferLength);
 
 	cv::Mat matImg;
 	try
 	{
-	    matImg = cv::imdecode(cv::Mat(buff), cv::CV_LOAD_IMAGE_COLOR);
+	    matImg = cv::imdecode(cv::Mat(buff), CV_LOAD_IMAGE_COLOR);
 	}
 	catch (std::exception& e)
 	{
