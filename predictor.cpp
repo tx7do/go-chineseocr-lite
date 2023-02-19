@@ -97,6 +97,13 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	bool doAngle, bool mostAngle)
 {
 	auto predictor = (Predictor*)pred;
+	assert(predictor);
+
+	if (imageBuffer == nullptr || bufferLength < 0)
+	{
+	    predictor->_ocrlite->log("image data error:\n");
+	    return "";
+	}
 
 	std::vector<char> buff;
 	buff.resize(bufferLength);
@@ -111,7 +118,7 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	}
 	catch (std::exception& e)
 	{
-		predictor->_ocrlite->log("decode image error:\n %s\n", e.what());
+		predictor->_ocrlite->log("decode image error: %s\n", e.what());
 		return "";
 	}
 
