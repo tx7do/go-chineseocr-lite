@@ -96,10 +96,12 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 {
 	auto predictor = (Predictor*)pred;
 
+	std::vector<uchar> buff(imageBuffer, bufferLength);
+
 	cv::Mat matImg;
 	try
 	{
-	    matImg = cv::imdecode(cv::Mat(1, bufferLength, CV_8UC1, imageBuffer), cv::IMREAD_UNCHANGED);
+	    matImg = cv::imdecode(cv::Mat(buff), cv::CV_LOAD_IMAGE_COLOR);
 	}
 	catch (std::exception& e)
 	{
