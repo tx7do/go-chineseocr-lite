@@ -12,7 +12,6 @@
 struct Predictor
 {
 	std::shared_ptr<OcrLite> _ocrlite;
-	OcrResult _latestResult;
 	Predictor()
 		: _ocrlite(std::make_shared<OcrLite>())
 	{
@@ -28,14 +27,34 @@ OCR_PredictorContext OCR_NewPredictor(bool isOutputConsole, bool isOutputPartImg
 	return (OCR_PredictorContext)ctx;
 }
 
-void OCR_PredictorDelete(OCR_PredictorContext pred)
+void OCR_DeletePredictor(OCR_PredictorContext pred)
 {
 	auto predictor = (Predictor*)pred;
 	if (predictor == nullptr)
 	{
-		throw std::runtime_error(std::string("Invalid pointer to the predictor in OCR_PredictorDelete."));
+		throw std::runtime_error(std::string("Invalid pointer to the predictor in OCR_DeletePredictor."));
 	}
 	delete predictor;
+}
+
+void OCR_DeleteResult(OCR_PredictorResult res)
+{
+	auto result = (OcrResult*)res;
+	if (result == nullptr)
+	{
+		throw std::runtime_error(std::string("Invalid pointer to the result in OCR_DeleteResult."));
+	}
+	delete result;
+}
+
+const char* OCR_ResultGetString(OCR_PredictorResult res)
+{
+	auto result = (OcrResult*)res;
+	if (result == nullptr)
+	{
+		throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
+	}
+	return result->strRes.c_str();
 }
 
 void OCR_PredictorSetNumThread(OCR_PredictorContext pred, int numOfThread)
@@ -54,7 +73,7 @@ bool OCR_PredictorInitModels(OCR_PredictorContext pred,
 	return predictor->_ocrlite->initModels(detPath, clsPath, recPath, keysPath);
 }
 
-const char* OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
+OCR_PredictorResult OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
 	const char* imgDir, const char* imgName,
 	int padding, int maxSideLen,
 	float boxScoreThresh, float boxThresh, float unClipRatio,
@@ -71,21 +90,23 @@ const char* OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
 
 	try
 	{
-		predictor->_latestResult = predictor->_ocrlite->detect(imgDir, imgName,
+	    auto result = new OcrResult;
+
+		*result = predictor->_ocrlite->detect(imgDir, imgName,
 			padding, maxSideLen,
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle);
 		// predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
-		return predictor->_latestResult.strRes.c_str();
+		return (OCR_PredictorResult) result;
 	}
 	catch (std::exception& e)
 	{
 		predictor->_ocrlite->log("Detect Error:\n %s\n", e.what());
-		return "";
+		return nullptr;
 	}
 }
 
-const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
+OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	char* imageBuffer, int bufferLength,
 	int padding, int maxSideLen,
 	float boxScoreThresh, float boxThresh, float unClipRatio,
@@ -97,7 +118,7 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	if (imageBuffer == nullptr || bufferLength < 0)
 	{
 	    predictor->_ocrlite->log("image data error:\n");
-	    return "";
+	    return nullptr;
 	}
 
 	std::vector<char> buff;
@@ -114,7 +135,7 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	catch (std::exception& e)
 	{
 		predictor->_ocrlite->log("decode image error: %s\n", e.what());
-		return "";
+		return nullptr;
 	}
 
 	predictor->_ocrlite->log("=====Decode Image Done=====\n");
@@ -128,16 +149,18 @@ const char* OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 
 	try
 	{
-		predictor->_latestResult = predictor->_ocrlite->detect(matImg,
+        auto result = new OcrResult;
+
+		*result = predictor->_ocrlite->detect(matImg,
 			padding, maxSideLen,
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle);
 		// predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
-		return predictor->_latestResult.strRes.c_str();
+		return (OCR_PredictorResult) result;
 	}
 	catch (std::exception& e)
 	{
 		predictor->_ocrlite->log("Detect Error:\n %s\n", e.what());
-		return "";
+		return nullptr;
 	}
 }

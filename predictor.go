@@ -19,7 +19,7 @@ func New(isOutputConsole, isOutputPartImg, isOutputResultImg bool) *Predictor {
 }
 
 func (p *Predictor) Close() {
-	C.OCR_PredictorDelete(p.ctx)
+	C.OCR_DeletePredictor(p.ctx)
 	p.ctx = nil
 }
 
@@ -75,7 +75,11 @@ func (p *Predictor) DetectFileImage(imgDir, imgName string, padding, maxSideLen 
 		C.bool(doAngle), C.bool(mostAngle),
 	)
 
-	goResult := C.GoString(result)
+	strResult := C.OCR_ResultGetString(result)
+	defer C.OCR_DeleteResult(result)
+
+	goResult := C.GoString(strResult)
+
 	return string(goResult)
 }
 
@@ -91,6 +95,9 @@ func (p *Predictor) DetectMemoryImage(imgBuffer []byte, padding, maxSideLen int,
 		C.bool(doAngle), C.bool(mostAngle),
 	)
 
-	goResult := C.GoString(result)
+	strResult := C.OCR_ResultGetString(result)
+	defer C.OCR_DeleteResult(result)
+
+	goResult := C.GoString(strResult)
 	return string(goResult)
 }
