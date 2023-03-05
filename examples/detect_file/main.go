@@ -51,7 +51,7 @@ func main() {
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle,
 		)
-		log.Println(result)
+		log.Println("[1] Final Result is: ", result)
 
 		chs[0] <- 1
 	}()
@@ -64,7 +64,7 @@ func main() {
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle,
 		)
-		log.Println(result)
+		log.Println("[2] Final Result is: ", result)
 
 		chs[1] <- 1
 	}()
@@ -77,7 +77,7 @@ func main() {
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle,
 		)
-		log.Println(result)
+		log.Println("[3] Final Result is: ", result)
 
 		chs[2] <- 1
 	}()

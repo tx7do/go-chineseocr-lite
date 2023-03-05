@@ -44,5 +44,5 @@ func main() {
 		boxScoreThresh, boxThresh, unClipRatio,
 		doAngle, mostAngle,
 	)
-	log.Println(result)
+	log.Println("Final Result is: ", result)
 }
