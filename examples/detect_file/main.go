@@ -26,8 +26,7 @@ func NewPredictor() *ocrlite.Predictor {
 	return pred
 }
 
-func main() {
-
+func doMultiThread() {
 	var padding = 5
 	var maxSideLen = 2046
 	var boxScoreThresh float32 = 0.618
@@ -85,5 +84,27 @@ func main() {
 	for _, ch := range chs {
 		<-ch
 	}
+}
 
+func doSingleThread() {
+	var padding = 5
+	var maxSideLen = 2046
+	var boxScoreThresh float32 = 0.618
+	var boxThresh float32 = 0.350
+	var unClipRatio float32 = 2.6
+	const doAngle = true
+	const mostAngle = true
+
+	pred := NewPredictor()
+
+	result := pred.DetectFileImage("../_fixtures/", "2.jpg",
+		padding, maxSideLen,
+		boxScoreThresh, boxThresh, unClipRatio,
+		doAngle, mostAngle,
+	)
+	log.Println("[1] Final Result is: ", result)
+}
+
+func main() {
+	doSingleThread()
 }
