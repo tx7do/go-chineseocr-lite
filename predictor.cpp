@@ -42,7 +42,6 @@ void OCR_DeletePredictor(OCR_PredictorContext pred)
 
 void OCR_DeleteResult(OCR_PredictorResult res)
 {
-    printf("OCR_DeleteResult\n");
 	auto result = (OcrResult*)res;
 	//assert(result);
 	if (result == nullptr)
@@ -179,8 +178,6 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 
 	predictor->_ocrlite->log("=====Decode Image Done=====");
 
-	return nullptr;
-
 	//predictor->_ocrlite->enableResultTxt("./", "memory.jpg");
 
 	predictor->_ocrlite->log("=====Input Params=====");
@@ -188,15 +185,16 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 		"padding(%d),maxSideLen(%d),boxScoreThresh(%f),boxThresh(%f),unClipRatio(%f),doAngle(%d),mostAngle(%d)",
 		padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
 
-    auto result = new OcrResult;
+    //auto result = new OcrResult;
 	try
 	{
-		*result = predictor->_ocrlite->detect(matImg,
+		auto result = predictor->_ocrlite->detect(matImg,
 			padding, maxSideLen,
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle);
 		// predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
-		return (OCR_PredictorResult) result;
+		//return (OCR_PredictorResult) result;
+		return nullptr;
 	}
 	catch (std::exception& e)
 	{
