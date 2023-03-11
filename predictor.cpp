@@ -89,7 +89,7 @@ bool OCR_PredictorInitModels(OCR_PredictorContext pred,
     if (predictor == nullptr)
     {
         //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
-        return;
+        return false;
     }
 
 	return predictor->_ocrlite->initModels(detPath, clsPath, recPath, keysPath);
