@@ -56,7 +56,7 @@ void OCR_DeleteResult(OCR_PredictorResult res)
 const char* OCR_ResultGetString(OCR_PredictorResult res)
 {
 	auto result = (OcrResult*)res;
-	assert(result);
+	//assert(result);
 	if (result == nullptr)
 	{
 		//throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
