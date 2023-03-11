@@ -96,9 +96,6 @@ func (p *Predictor) DetectMemoryImage(imgBuffer []byte, padding, maxSideLen int,
 	)
 	defer C.OCR_DeleteResult(result)
 
-	return ""
-
-	strResult := C.OCR_ResultGetString(result)
-	goResult := C.GoString(strResult)
+	goResult := C.GoString(C.OCR_ResultGetString(result))
 	return string(goResult)
 }
