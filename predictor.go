@@ -95,6 +95,8 @@ func (p *Predictor) DetectMemoryImage(imgBuffer []byte, padding, maxSideLen int,
 		C.bool(doAngle), C.bool(mostAngle),
 	)
 
+	return ""
+
 	strResult := C.OCR_ResultGetString(result)
 	defer C.OCR_DeleteResult(result)
 
