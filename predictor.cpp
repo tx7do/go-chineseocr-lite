@@ -106,7 +106,7 @@ OCR_PredictorResult OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
     if (predictor == nullptr)
     {
         //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
-        return;
+        return nullptr;
     }
 
 	//predictor->_ocrlite->enableResultTxt(imgDir, imgName);
@@ -145,7 +145,7 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
     if (predictor == nullptr)
     {
         //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
-        return;
+        return nullptr;
     }
 
 	if (imageBuffer == nullptr || bufferLength < 0)
