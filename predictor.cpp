@@ -185,7 +185,7 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 		"padding(%d),maxSideLen(%d),boxScoreThresh(%f),boxThresh(%f),unClipRatio(%f),doAngle(%d),mostAngle(%d)",
 		padding, maxSideLen, boxScoreThresh, boxThresh, unClipRatio, doAngle, mostAngle);
 
-    //auto result = new OcrResult;
+    auto result = new OcrResult;
 	try
 	{
 		auto result = predictor->_ocrlite->detect(matImg,
@@ -193,13 +193,12 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle);
 		// predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
-		//return (OCR_PredictorResult) result;
-		return nullptr;
+		return (OCR_PredictorResult) result;
 	}
 	catch (std::exception& e)
 	{
 		predictor->_ocrlite->log("Detect Error:\n %s\n", e.what());
-//		if (result != nullptr) delete result;
+		if (result != nullptr) delete result;
 		return nullptr;
 	}
 }
