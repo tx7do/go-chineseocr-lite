@@ -188,10 +188,11 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
     auto result = new OcrResult;
 	try
 	{
-		auto result = predictor->_ocrlite->detect(matImg,
+		auto res = predictor->_ocrlite->detect(matImg,
 			padding, maxSideLen,
 			boxScoreThresh, boxThresh, unClipRatio,
 			doAngle, mostAngle);
+		*result = res;
 		// predictor->_ocrlite->log("Result String:\n %s\n", result.strRes.c_str());
 		return (OCR_PredictorResult) result;
 	}
