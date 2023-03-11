@@ -94,12 +94,11 @@ func (p *Predictor) DetectMemoryImage(imgBuffer []byte, padding, maxSideLen int,
 		C.float(boxScoreThresh), C.float(boxThresh), C.float(unClipRatio),
 		C.bool(doAngle), C.bool(mostAngle),
 	)
-
-	strResult := C.OCR_ResultGetString(result)
 	defer C.OCR_DeleteResult(result)
 
 	return ""
 
+	strResult := C.OCR_ResultGetString(result)
 	goResult := C.GoString(strResult)
 	return string(goResult)
 }
