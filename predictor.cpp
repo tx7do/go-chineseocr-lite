@@ -31,6 +31,7 @@ OCR_PredictorContext OCR_NewPredictor(bool isOutputConsole, bool isOutputPartImg
 void OCR_DeletePredictor(OCR_PredictorContext pred)
 {
 	auto predictor = (Predictor*)pred;
+	assert(predictor);
 	if (predictor == nullptr)
 	{
 		//throw std::runtime_error(std::string("Invalid pointer to the predictor in OCR_DeletePredictor."));
@@ -41,7 +42,9 @@ void OCR_DeletePredictor(OCR_PredictorContext pred)
 
 void OCR_DeleteResult(OCR_PredictorResult res)
 {
+    printf("OCR_DeleteResult\n");
 	auto result = (OcrResult*)res;
+	assert(result);
 	if (result == nullptr)
 	{
 		//throw std::runtime_error(std::string("Invalid pointer to the result in OCR_DeleteResult."));
@@ -53,6 +56,7 @@ void OCR_DeleteResult(OCR_PredictorResult res)
 const char* OCR_ResultGetString(OCR_PredictorResult res)
 {
 	auto result = (OcrResult*)res;
+	assert(result);
 	if (result == nullptr)
 	{
 		//throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
@@ -64,6 +68,13 @@ const char* OCR_ResultGetString(OCR_PredictorResult res)
 void OCR_PredictorSetNumThread(OCR_PredictorContext pred, int numOfThread)
 {
 	auto predictor = (Predictor*)pred;
+	assert(predictor);
+    if (predictor == nullptr)
+    {
+        //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
+        return;
+    }
+
 	predictor->_ocrlite->setNumThread(numOfThread);
 }
 
@@ -74,6 +85,13 @@ bool OCR_PredictorInitModels(OCR_PredictorContext pred,
 	const char* keysPath)
 {
 	auto predictor = (Predictor*)pred;
+	assert(predictor);
+    if (predictor == nullptr)
+    {
+        //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
+        return;
+    }
+
 	return predictor->_ocrlite->initModels(detPath, clsPath, recPath, keysPath);
 }
 
@@ -84,6 +102,12 @@ OCR_PredictorResult OCR_PredictorDetectFileImage(OCR_PredictorContext pred,
 	bool doAngle, bool mostAngle)
 {
 	auto predictor = (Predictor*)pred;
+	assert(predictor);
+    if (predictor == nullptr)
+    {
+        //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
+        return;
+    }
 
 	//predictor->_ocrlite->enableResultTxt(imgDir, imgName);
 
@@ -118,6 +142,11 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 {
 	auto predictor = (Predictor*)pred;
 	assert(predictor);
+    if (predictor == nullptr)
+    {
+        //throw std::runtime_error(std::string("Invalid pointer to the result in OCR_ResultGetString."));
+        return;
+    }
 
 	if (imageBuffer == nullptr || bufferLength < 0)
 	{
@@ -142,13 +171,15 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 		return nullptr;
 	}
 
-	if ( matImg.data == nullptr)
+	if (matImg.data == nullptr)
 	{
 		predictor->_ocrlite->log("decode image data invalid");
 		return nullptr;
 	}
 
 	predictor->_ocrlite->log("=====Decode Image Done=====");
+
+	return nullptr;
 
 	//predictor->_ocrlite->enableResultTxt("./", "memory.jpg");
 
