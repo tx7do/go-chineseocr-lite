@@ -199,7 +199,7 @@ OCR_PredictorResult OCR_PredictorDetectMemoryImage(OCR_PredictorContext pred,
 	catch (std::exception& e)
 	{
 		predictor->_ocrlite->log("Detect Error:\n %s\n", e.what());
-		if (result != nullptr) delete result;
+//		if (result != nullptr) delete result;
 		return nullptr;
 	}
 }
